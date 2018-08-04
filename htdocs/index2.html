@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="jquery-1.5.2.min.js"></script>
+<script type="text/javascript" src="flowplayer/3.2.15/flowplayer-3.2.11.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("div#id_video").flowplayer({src:'flowplayer/3.2.15/flowplayer-3.2.15.swf',wmode:'transparent'},{
+		clip : {scaling: 'fit', autoPlay: true, autoBuffering: true ,
+			url:"http://jljsyx.cn/r/resource/res/3/106819/b1b7d7e7348946d4b3841c9712b8dd82/a.flv"
+		}
+	});
+	
+	var param={
+		url: 'flowplayer.content-3.2.9.swf',
+		opacity:1,
+        borderRadius: 0,
+        backgroundColor:"rgba(0, 0, 0, 0.0)",
+       	backgroundGradient:"none",
+        border:"none",
+        style: {
+            '.title': {fontSize:16,fontFamily: 'verdana,arial,helvetica',display:"inline"}
+        }
+	}
+	
+	$f().onLoad(function(){
+		$("button").click(function(){
+			var d= "<span class=\"title\">"+$("#id_text").val()+"</span>";
+			//var dd= $(d).appendTo("body");
+			//var w=dd.width()+20;
+			//var h=dd.height()+20;
+			//dd.remove();
+			
+			var x=$.extend( {}, param);
+			x.html=d;
+			//x.width=w;
+			//x.height=400;
+			
+			x.left=600;
+			x.top=Math.random()*300;
+			
+			$f().loadPlugin("maml_","flowplayer.content-3.2.9.swf",x,function(){
+				this.animate({right:600*2,left:0},50000,"linear");
+			});
+		});
+	});
+	
+	
+	
+});
+</script>
+<style type="text/css">
+#id_video{width: 600px;height: 400px;overflow: hidden;}
+.title{font-size: 16px;fontFamily: 'verdana,arial,helvetica';}
+</style>
+
+</head>
+<body>
+<div id="id_video" style="background: #000;"></div>
+
+<br/>
+<input id="id_text" value="八王爷" style="width: 600px;"/>
+<button>设置</button>
+</body>
+</html>

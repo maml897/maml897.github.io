@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="jquery-1.5.2.min.js"></script>
+
+
+</head>
+<body>
+<canvas id="myCanvas" width="500" height="500" style="border: 1px solid palevioletred;background-color: salmon"></canvas>
+<script type="text/javascript">
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext('2d');
+        function drawclock() {
+            var deg = Math.PI / 180;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);//清空画布
+            //表盘
+            ctx.beginPath();
+            ctx.arc(250, 250, 200, 0, Math.PI * 2, true)
+            ctx.lineWidth = 10;
+            ctx.strokeStyle = "darksalmon";
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 5;
+            //数字
+            for (var i = 0; i < 12; i++) {
+                txt=i<1?12:[i];        //三目运算符
+                ctx.font = "15px  KaiTi";
+                ctx.lineWidth = 2;
+                ctx.strokeText(txt, 244 + Math.sin(deg * 30 * i) * 170, 256 - Math.cos(deg * 30 * i) * 170);        
+            }
+            //时间点
+                for (var j = 0; j < 60; j++) {
+                    ctx.beginPath();
+                    ctx.lineWidth =j%5==0?5:2;            
+                    ctx.moveTo(250 + Math.sin(deg * 6 * j) * 185, 250 - Math.cos(deg * 6 * j) * 185);
+                    ctx.lineTo(250 + Math.sin(deg * 6 * j) * 195, 250 - Math.cos(deg * 6 * j) * 195);
+                    ctx.stroke();
+                }
+            //获取时间
+            var now = new Date(); //定义时间
+            var sec = now.getSeconds(); //获取秒
+            var minute = now.getMinutes(); //获取分钟
+            var hour = now.getHours(); //获取小时
+            //小时必须获取浮点类型，产生偏移（小时+分钟比）
+            hour = hour + minute / 60;
+            hour = hour > 12 ? hour - 12 : hour;//将24小时转换为12小时
+            //画分针
+            ctx.save();//保存了ctx当前的状态值
+            ctx.beginPath();
+            ctx.strokeStyle = "yellow";
+            ctx.lineWidth = 5;
+            ctx.moveTo(250, 250);
+            ctx.lineTo(250 + Math.sin(deg * 6 * minute) * 150, 250 - Math.cos(deg * 6 * minute) * 150);
+            ctx.stroke();        
+            //画秒针
+            ctx.beginPath();
+            ctx.strokeStyle = "red";
+            ctx.lineWidth = 3;
+            ctx.moveTo(250, 250);
+            ctx.lineTo(250 + Math.sin(deg * 6 * sec) * 170, 250 - Math.cos(deg * 6 * sec) * 170);
+            ctx.stroke();
+            ctx.restore();
+            //画时针
+            ctx.beginPath();
+            ctx.strokeStyle = "mediumspringgreen";
+            ctx.lineWidth = 10;
+            ctx.moveTo(250, 250);
+            ctx.lineTo(250 + Math.sin(deg * 30 * hour) * 130, 250 - Math.cos(deg * 30 * hour) * 130);
+            ctx.stroke();
+            ctx.restore();//将ctx之前的状态值还原回去
+        }
+        drawclock();
+        setInterval(drawclock, 1000);
+    </script>
+</body>
+</html>

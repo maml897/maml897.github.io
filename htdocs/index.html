@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="jquery-1.5.2.min.js"></script>
+<script type="text/javascript" src="flowplayer/3.2.15/flowplayer-3.2.11.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$.fn.flowplayerQs=function(flashParam,playerParam){
+		flashParam = $.extend(true,{},{wmode:'transparent'}, flashParam);
+		var defaultPlayerParam={
+				clip : {scaling: 'fit', autoPlay: false, autoBuffering: true ,
+					url:"http://jljsyx.cn/r/resource/res/3/106819/b1b7d7e7348946d4b3841c9712b8dd82/a.flv"
+				}, 
+			    play: {label: '播放',replayLabel: '重播'},// http://flash.flowplayer.org/documentation/skinning/branding.html#play
+			    plugins: {
+			        controls: {//http://flash.flowplayer.org/plugins/flash/controlbar.html
+			            autoHide:true,//自动隐藏工具栏
+			            scrubber: true,//是否显示进度条
+			            play: true,//是否显示播放/暂停按钮
+			            tooltips: {buttons: true,  fullscreen: '全屏模式', fullscreenExit: '退出全屏', play: '播放', pause: '暂停', mute: '静音',unmute: '取消静音'}
+			        }
+			    },
+			    screen:{},
+			    canvas: {backgroundColor: "#000000",backgroundGradient: 'none'},
+			    log:{level:"error"}
+			   
+		};
+		playerParam = $.extend(true,{},defaultPlayerParam, playerParam);	
+		return this.css("display","block").flowplayer(flashParam,playerParam);
+	}
+	
+	//$("div#id_video").empty().flowplayerQs({src:'flowplayer/3.2.15/flowplayer-3.2.15.swf'},{});
+	
+	var param = {
+		clip: {url: '',live: false,provider: 'rtmp' ,autoPlay: true},
+		plugins: {rtmp: {url: "flowplayer.rtmp-3.2.13.swf"},controls: {scrubber: false,time:false}},
+		onLoad:function(){
+			var plugin = $f().getControls();
+			$("#ceng").hover(function(){
+				plugin.setAutoHide(false)
+			},function(){
+				plugin.setAutoHide(true)
+			});
+		}
+	}
+	
+	
+	$("#id_save").click(function(){
+		var rtmp = $("#id_rtmp").val();
+		if(rtmp===""){alert("没有播放源");return;}
+		param.clip.url=rtmp;
+		param.clip.live=$("#id_live").attr("checked");
+		param.plugins.controls.scrubber=!param.clip.live;
+		$("div#id_video").empty().flowplayerQs({src:'flowplayer/3.2.15/flowplayer-3.2.15.swf',},param);
+	});
+	
+	$("#id_save_").click(function(){
+		var http = $("#id_http").val();
+		if(http===""){alert("没有播放源");return;}
+		$("div#id_video").empty().flowplayerQs({src:'flowplayer/3.2.15/flowplayer-3.2.15.swf',},{
+			clip:{url:http,
+				autoPlay: true
+			}
+		});
+	});
+	
+	
+	
+	var dragging = false;
+    var iX, iY,lastIX,lastIY;
+	var flag=false;
+	
+	
+	var id_video= $("#id_video_wrap"),w=$(window),max =  id_video.offset().top+id_video.height();
+	w.scroll(function(){
+		var top =w.scrollTop();
+		if(top>=max){
+			if(!flag){
+				id_video.removeClass("static").addClass("fixed");
+				if(lastIX){
+					id_video.css("left",lastIX);
+				}
+				if(lastIY){
+					id_video.css("top",lastIY);
+				}
+				$("#ceng").show();
+				flag=true;
+			}
+		}
+		else{
+			if(flag){
+				id_video.removeAttr("style").removeClass("fixed").addClass("static");
+				$("#ceng").hide();
+				flag=false;
+			}
+		}
+		
+	});
+	
+	
+	
+    $("#ceng").mousedown(function(e) {
+        dragging = true;
+        iX =e.offsetX;
+        iY =e.offsetY-28;
+        return false;
+    });
+    $("#ceng").mouseup(function(e) {
+        dragging = false;
+    });
+    
+    $(document).mousemove(function(){
+    	 if (dragging) 
+    	 {
+   	        var e = e || window.event;
+   	     	lastIX = e.clientX-iX;
+   	    	lastIY = e.clientY-iY;
+   	        $("#ceng").parent().css({"left":lastIX + "px", "top":lastIY + "px"});
+   	        return false;
+    	}
+    	
+    }); 
+	
+});
+</script>
+<style type="text/css">
+#id_video_wrap{overflow: hidden;}
+.fixed{position:fixed;bottom:100px;right:100px;width:300px;height:200px;}
+.static{width: 600px;height: 400px;margin: 0 auto;margin-top: 30px;position: relative;}
+object{cursor: move;}
+
+#id_video{height: 100%;width: 100%;}
+</style>
+
+</head>
+<body>
+<div style="margin: 0 auto;width: 600px;">RTMP地址：<input style="width: 300px;" id="id_rtmp"/> 直播勾选：<input type="checkbox" id="id_live"/> <input type="button" value="播放" id="id_save"/></div>
+<div style="margin: 0 auto;width: 600px;">http地址：<input style="width: 300px;" id="id_http"/><input type="button" value="播放" id="id_save_"/></div>
+
+<div class="static" id="id_video_wrap">
+	<div style="position: absolute;top:-28px;left:0px;width: 100%;height: 100%;background: red;opacity:0;cursor: move;display: none;" id="ceng"></div>
+	<div id="id_video" style="background: #000;"></div>
+</div>
+
+
+<div style="text-align: center;">拖动滚动条试试！！！</div>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+scroll
+</body>
+</html>

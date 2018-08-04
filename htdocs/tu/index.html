@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)http://echoma.github.io/text_sequence_diagram/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Online Text Sequence Diagram</title>
+<style>
+html,body {width:100%; height:100%; overflow:hidden; }
+* {margin:0px; padding:0px;}
+body {background-color:DarkKhaki;}
+
+#render_dlg div.view {
+	width: 100%;
+	height: 100%;
+	background-image: linear-gradient(to bottom, #EEE, #FFF);
+	border: 1px solid black;
+	position: relative;
+}
+#editor_dlg textarea{
+	background-color:DarkSlateGray;
+	width: 100%;
+	height: 100%;
+	color: white;
+	font-size: 0.6em;
+	resize: none;
+}
+</style>
+<link href="http://echoma.github.io/text_sequence_diagram/css/seq_diagram.less" rel="stylesheet/less"><style type="text/css" id="less:text_sequence_diagram-css-seq_diagram">.seqdiagram {
+  margin: 0;
+  padding: 0;
+  color: midnightblue;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.seqdiagram * {
+  margin: 0;
+  padding: 0;
+}
+.seqdiagram .seqdiagram_title {
+  display: flex;
+  font-size: 0.75em;
+  text-shadow: 0.125em 0.125em 0.125em #b3b3b3;
+}
+.seqdiagram .seqdiagram_title .box {
+  padding: 0.3125em 0.625em 0.3125em 0.625em;
+  border: 0.0625em solid gray;
+  border-top: 0;
+  background-color: LemonChiffon;
+}
+.seqdiagram .seqdiagram_title .west {
+  border-left: 0;
+  border-bottom-right-radius: 1em;
+}
+.seqdiagram .seqdiagram_title .center {
+  flex: 1;
+}
+.seqdiagram .seqdiagram_title .east {
+  border-right: 0;
+  border-bottom-left-radius: 1em;
+}
+.seqdiagram .seqdiagram_sysbox {
+  display: flex;
+  position: relative;
+  flex: 1;
+}
+.seqdiagram .seqdiagram_sysbox .subsys {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 12.5em;
+  margin: 0.625em;
+}
+.seqdiagram .seqdiagram_sysbox .subsys .title {
+  border: 0.0625em solid black;
+  border-radius: 0.375em;
+  padding: 0.3125em;
+  text-align: center;
+  text-shadow: 0.125em 0.125em 0.125em #b3b3b3;
+  box-shadow: 0.25em 0.25em 0.25em #b3b3b3;
+  font-size: 0.875em;
+  background-image: linear-gradient(to bottom, #CCC, #ffffff);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.seqdiagram .seqdiagram_sysbox .subsys .bodybox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.seqdiagram .seqdiagram_sysbox .subsys .bodybox .bodyline {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 0;
+  border-left: 1px dashed black;
+  flex: 0.5;
+}
+.seqdiagram .seqdiagram_sysbox .subsys .bodybox .bodydock {
+  width: 0.625em;
+  background-color: pink;
+  flex: 1;
+  box-shadow: 0.25em 0.25em 0.25em #b3b3b3;
+  z-index: 1;
+}
+.seqdiagram .seqdiagram_bottom {
+  display: flex;
+  font-size: 0.75em;
+  text-shadow: 0.125em 0.125em 0.125em #b3b3b3;
+  margin: 0.3125em;
+}
+.seqdiagram .seqdiagram_bottom .side {
+  flex: 1;
+}
+.seqdiagram .seqdiagram_bottom .center {
+  padding: 0.9375em;
+  border: 0.0625em solid gray;
+  border-radius: 1em;
+  background-color: LemonChiffon;
+}
+.seqdiagram .arrow_line {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 0.625em;
+  z-index: 0;
+  width: 200px;
+}
+.seqdiagram .arrow_line .line {
+  border-bottom: 0.0625em solid black;
+  height: 0;
+  flex: 1;
+}
+.seqdiagram .arrow_line .dashline {
+  border-bottom: 0.0625em dashed black;
+  height: 0;
+  flex: 1;
+}
+.seqdiagram .arrow_line .arrow_to_right:before {
+  content: "?";
+  color: black;
+}
+.seqdiagram .arrow_line .arrow_to_left:before {
+  content: "?";
+  color: black;
+}
+.seqdiagram .arrow_line .note {
+  position: absolute;
+  margin: auto;
+  top: -1em;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.875em;
+  text-shadow: 0.125em 0.125em 0.125em #b3b3b3;
+  paddng: 0 0.5em 0 0.5em;
+  color: dimgray;
+}
+.seqdiagram .self_msg_line {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 0.625em;
+  z-index: 0;
+  width: 200px;
+}
+.seqdiagram .self_msg_line .link {
+  width: 1.5em;
+  height: 1.5em;
+  border: 0.0625em solid black;
+  border-left: 0;
+}
+.seqdiagram .self_msg_line .arrow:before {
+  content: "?";
+  color: black;
+  position: absolute;
+  left: 0;
+  bottom: -1.09375em;
+}
+.seqdiagram .self_msg_line .note {
+  flex: 1;
+  text-align: left;
+  font-size: 0.875em;
+  text-shadow: 0.125em 0.125em 0.125em #b3b3b3;
+  color: dimgray;
+  padding-left: 0.3125em;
+}
+</style>
+<script type="text/javascript" src="./Online Text Sequence Diagram_files/less.min.js.下载"></script>
+<script type="text/javascript" src="./Online Text Sequence Diagram_files/jquery.min.js.下载"></script>
+<link href="./Online Text Sequence Diagram_files/jquery-ui.css" rel="stylesheet">
+<script type="text/javascript" src="./Online Text Sequence Diagram_files/jquery-ui.min.js.下载"></script>
+<script type="text/javascript" src="./Online Text Sequence Diagram_files/seq_diagram.js.下载"></script>
+<script>
+$(document).ready(function(){
+	$('#editor_dlg').dialog({
+		title: "Text Editor",
+		dialogClass: "no-close",
+		width: 400,
+		height: 300,
+		position: {my: "left top", at: "left top", of: window}
+	});
+	$('#render_dlg').dialog({
+		title: "Sequence Diagram View",
+		dialogClass: "no-close",
+		width: 800,
+		height: 600,
+		position: {my: "center top", at: "center top", of: window}
+	});
+	//render
+	var sd = new SequenceDiagram( $('#render_dlg').find('.view') );
+	//editor update event handler
+	var editor = $('#editor_dlg').find('textarea');
+	editor.change(function(){
+		$(this).attr('editor_updated',1);
+	}).keyup(function(){
+		$(this).attr('editor_updated',1);
+	});
+	setInterval(function(){
+		var updated = parseInt(editor.attr('editor_updated'));
+		if (updated>0)
+		{
+			sd.draw(editor.val());
+			editor.attr('editor_updated',0);
+		}
+	},1500);
+});
+</script>
+</head>
+
+<body>
+
+
+
+
+
+<a href="https://github.com/echoma/text_sequence_diagram"><img style="position: absolute; top: 0; right: 0; border: 0;" src="./Online Text Sequence Diagram_files/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+
+<div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front no-close ui-draggable ui-resizable" tabindex="-1" role="dialog" aria-describedby="editor_dlg" aria-labelledby="ui-id-1" style="position: absolute; height: auto; width: 400px; top: 0px; left: 0px; display: block;"><div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle"><span id="ui-id-1" class="ui-dialog-title">Text Editor</span><button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" title="Close"><span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">Close</span></button></div><div id="editor_dlg" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; max-height: none; height: 232px;">
+	<textarea editor_updated="0"># Title And Author
+Sample Diagram @ v1.0 @ 20160416 @ EchoMa
+
+# Object And Messages
+Conn Server -&gt; Safe Domain GW : new order request
+Safe Domain GW -&gt; Logic Control : internal protocol
+Logic Control : check param
+Logic Control -&gt; Order Manage : add new order
+Order Manage -&gt; Logic Control : order created
+Logic Control --&gt; Safe Domain GW : success response
+Safe Domain GW --&gt; Conn Server : response
+
+# Bottom Description
+[This is a description for this diagram]
+[ how an order request is passed between sub-systems ]
+	</textarea>
+</div><div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90;"></div></div><div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front no-close ui-draggable ui-resizable" tabindex="-1" role="dialog" aria-describedby="render_dlg" aria-labelledby="ui-id-2" style="position: absolute; height: auto; width: 800px; top: 0px; left: 555.5px; display: block; z-index: 101;"><div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle"><span id="ui-id-2" class="ui-dialog-title">Sequence Diagram View</span><button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" title="Close"><span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">Close</span></button></div><div id="render_dlg" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; max-height: none; height: 532px;">
+	<div class="view"><div class="seqdiagram" style="display:none;"><div class="seqdiagram_title"><div class="box west">Sample Diagram v1.0</div><div class="center"></div><div class="box east">EchoMa 20160416</div></div><div class="seqdiagram_sysbox"><div class="subsys" name="subsys0">				<div class="title">Conn Server</div>				<div class="bodybox"><div class="bodyline"></div><div class="bodydock" style="flex:1;background-color:SteelBlue"></div><div class="bodyline" style="flex:5"></div><div class="bodydock" style="flex:1;background-color:SteelBlue"></div><div class="bodyline"></div></div>				<div class="title">Conn Server</div>			</div><div class="subsys" name="subsys1">				<div class="title">Safe Domain GW</div>				<div class="bodybox"><div class="bodyline"></div><div class="bodydock" style="flex:2;background-color:coral"></div><div class="bodyline" style="flex:3"></div><div class="bodydock" style="flex:2;background-color:coral"></div><div class="bodyline"></div></div>				<div class="title">Safe Domain GW</div>			</div><div class="subsys" name="subsys2">				<div class="title">Logic Control</div>				<div class="bodybox"><div class="bodyline"></div><div class="bodyline" style="flex:1"></div><div class="bodydock" style="flex:5;background-color:DeepSkyBlue"></div><div class="bodyline" style="flex:1"></div><div class="bodyline"></div></div>				<div class="title">Logic Control</div>			</div><div class="subsys" name="subsys3">				<div class="title">Order Manage</div>				<div class="bodybox"><div class="bodyline"></div><div class="bodyline" style="flex:3"></div><div class="bodydock" style="flex:2;background-color:lightgreen"></div><div class="bodyline" style="flex:2"></div><div class="bodyline"></div></div>				<div class="title">Order Manage</div>			</div></div><div class="arrow_line" name="line0" style="width: 175.953px; left: 99px; top: 105.625px;">						<div class="line"></div>						<div class="arrow_to_right"></div>						<div class="note">new order request</div>					</div><div class="arrow_line" name="line1" style="width: 175.953px; left: 285.953px; top: 150.375px;">						<div class="line"></div>						<div class="arrow_to_right"></div>						<div class="note">internal protocol</div>					</div><div class="self_msg_line" name="line2" style="left: 472.906px; width: 165px; top: 195.125px;">					<div class="link"></div>					<div class="arrow"></div>					<div class="note">check param</div>				</div><div class="arrow_line" name="line3" style="width: 175.953px; left: 472.906px; top: 239.875px;">						<div class="line"></div>						<div class="arrow_to_right"></div>						<div class="note">add new order</div>					</div><div class="arrow_line" name="line4" style="width: 175.953px; left: 472.906px; top: 284.625px;">						<div class="arrow_to_left"></div>						<div class="line"></div>						<div class="note">order created</div>					</div><div class="arrow_line" name="line5" style="width: 175.953px; left: 285.953px; top: 329.375px;">						<div class="arrow_to_left"></div>						<div class="dashline"></div>						<div class="note">success response</div>					</div><div class="arrow_line" name="line6" style="width: 175.953px; left: 99px; top: 374.125px;">						<div class="arrow_to_left"></div>						<div class="dashline"></div>						<div class="note">response</div>					</div><div class="seqdiagram_bottom"><div class="side"></div><div class="center">This is a description for this diagram<br>how an order request is passed between sub-systems</div><div class="side"></div></div></div></div>
+</div><div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90;"></div></div></body></html>
