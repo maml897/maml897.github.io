@@ -9,6 +9,7 @@
 <script type="text/javascript" src="js/app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script type="text/javascript">
+//url:"https://api.douban.com/v2/movie/top250?start=25&count=25",
 $(function(){
 	$.ajax({
 		url:"http://211.159.175.225:8080/wish/demo/cros",
@@ -19,16 +20,26 @@ $(function(){
 	
 	var v=new Vue({
 			el: '#app-4',
-			data: {todos:[]}
+			data: {
+				titles:[],
+				todos:[],
+			}
 	});
 
 	$("#id_search").click(function(){
 		app.ajax({
-			//url:"https://api.douban.com/v2/movie/top250?start=25&count=25",
 			url:"/demo/jsonp?sql="+encodeURIComponent($("#id_area").val()),
 			dataType: "jsonp",
 			success:function(data){
 				v.todos = data.result;
+				
+				var arr=[];
+				if(data.result[0]){
+					for(var i in data.result[0]){
+						arr.push(i);				
+					}
+					v.titles =arr;
+				}
 			}
 		});
 	});
@@ -48,12 +59,10 @@ $(function(){
 <div id="app-4">
 	<table class="gridtable">
 		<tr>
-		<td>ID</td>
-		<td>RealName</td>
+			<td v-for="x in titles">{{x}}</td>
 		</tr>
-		<tr  v-for="todo in todos">
-		<td> {{ todo.ID }}</td>
-		<td> {{ todo.RealName }}</td>
+		<tr v-for="todo in todos">
+			<td  v-for="x in todo"> {{ x }}</td>
 		</tr>
 	</table>
 </div>
