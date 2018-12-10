@@ -10,7 +10,7 @@ $(function(){
 	$.ajax({
 		url:"http://211.159.175.225:8080/wish/demo/cros",
 		success:function(data){
-			alert(data);
+			console.log(data);
 		}
 	});
 	
@@ -32,11 +32,13 @@ $(function(){
 </head>
 <body>
 <div id="app-4">
-  <ol>
-    <li v-for="todo in todos">
-      {{ todo.RealName }}
-    </li>
-  </ol>
+	<table border="1" v-for="todo in todos">
+		<tr>
+		<td> {{ todo.ID }}</td>
+		<td> {{ todo.RealName }}</td>
+		</tr>
+	</table>
+  
 </div>
 </body>
 </html>
