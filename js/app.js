@@ -1,6 +1,6 @@
 var app={
-	//url:"http://211.159.175.225:8080/wish",
-	url:"http://localhost:8881/wish",
+	url:"http://211.159.175.225:8080/wish",
+	//url:"http://localhost:8881/wish",
 	ajax:function(obj){
 		var defaultObjt={
 			url:app.url+obj.url
