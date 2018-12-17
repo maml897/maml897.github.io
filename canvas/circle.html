@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>hangge.com</title>
+ <script>
+function draw() {
+ var canvas = document.getElementById('canvas');
+ if (canvas.getContext) {
+ var ctx = canvas.getContext('2d');
+
+ // 二次贝塞尔曲线
+ ctx.beginPath();
+  ctx.arc(75,75,35,0,Math.PI*0.9,false);
+ ctx.stroke();
+  }
+}
+ </script>
+</head>  
+ 
+<body onload="draw()">
+	<canvas id="canvas" width="400" height="300"></canvas>
+</body>
+</html>
